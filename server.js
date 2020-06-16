@@ -5,9 +5,10 @@ let bodyparser = require('body-parser');
 
 let mongoose = require('mongoose');
 
+//A database object to connect to the NerdSwag_db mongodb database
 let db = mongoose.connect('mongodb://localhost/NerdSwag_db');
 
-
+//Creating objects for each model to be used to make the appropriate HTTP requests
 let Product = require('./models/product');
 let WishList = require('./models/wishlist');
 let Cart = require('./models/cart');
@@ -25,7 +26,7 @@ app.all('/*', function(req, res, next) {
 app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({extended:false}));
 
-
+//To add a product with its designated data into the MongoDb database
 app.post('/product', function(req, res){
     let product = new Product();
     product.title = req.body.title;
@@ -42,6 +43,7 @@ app.post('/product', function(req, res){
     })
 });
 
+//To get the product data from the MongoDB database
 app.get('/product', function(req, res){
     Product.find({}, function(err, products){
       if(err){
@@ -53,7 +55,8 @@ app.get('/product', function(req, res){
     })
 });
 
-
+/*Retrieves the wishlist data and populates the wishlist with the appropriate
+ list of product data for each wishlist from the MongoDB database*/
 app.get('/wishlist', function(req, res){
     WishList.find({}).populate({path: 'products', model: 'Product'}).exec(function(err, wishLists)
   {
@@ -66,6 +69,7 @@ app.get('/wishlist', function(req, res){
   });
 });
 
+//To add a wishlist with it's designated data into the MongoDB database
 app.post('/wishlist', function(req, res){
 
     let wishList = new WishList();
@@ -82,6 +86,8 @@ app.post('/wishlist', function(req, res){
 
 });
 
+/*To edit the designated wishlist from the database and add the desired product data
+ for the list of products in the wishlist from the MongoDB database*/
 app.put('/wishlist/product/add', function(req, res){
   Product.findOne({_id: req.body.productId}, function(err, product){
       if(err){
@@ -101,7 +107,8 @@ app.put('/wishlist/product/add', function(req, res){
   })
 });
 
-
+/*Retrieves the cart data and populates the cart with the appropriate
+ list of product data for each cart from the MongoDB database*/
 app.get('/cart', function(req, res){
     Cart.find({}).populate({path: 'products', model: 'Product'}).exec(function(err, cart)
   {
@@ -114,6 +121,7 @@ app.get('/cart', function(req, res){
   });
 });
 
+//To add a cart with it's designated data into the MongoDB database
 app.post('/cart', function(req, res){
 
     let cart = new Cart();
@@ -130,6 +138,8 @@ app.post('/cart', function(req, res){
 
 });
 
+/*To edit the designated cart from the database and add the desired product data
+ for the list of products in the cart from the MongoDB database*/
 app.put('/cart/product/add', function(req, res){
   Product.findOne({_id: req.body.productId}, function(err, product){
       if(err){
@@ -149,7 +159,8 @@ app.put('/cart/product/add', function(req, res){
   })
 });
 
-
+/*Retrieves the account data and populates the account with the appropriate
+ type of list for wishlist and cart data for each account from the MongoDB database*/
 app.get('/account', function(req, res){
     Account.find({}).populate({path: 'wishlists', model: 'WishList'}).exec(function(err, account)
   {
@@ -177,6 +188,7 @@ app.get('/account', function(req, res){
 
 });
 
+//To add an account with it's designated data into the MongoDB database
 app.post('/account', function(req, res){
 
     let account = new Account();
@@ -196,6 +208,8 @@ app.post('/account', function(req, res){
 
 });
 
+/*To edit the designated account from the database and add the desired wishlist data
+ for the list of wishlists in the account from the MongoDB database*/
 app.put('/account/wishlist/add', function(req, res){
   WishList.findOne({_id: req.body.wishListId}, function(err, wishlist){
       if(err){
@@ -215,6 +229,8 @@ app.put('/account/wishlist/add', function(req, res){
   })
 });
 
+/*To edit the designated account from the database and add the desired cart data
+ for the list of carts in the account from the MongoDB database*/
 app.put('/account/cart/add', function(req, res){
   Cart.findOne({_id: req.body.cartId}, function(err, cart){
       if(err){
@@ -234,6 +250,8 @@ app.put('/account/cart/add', function(req, res){
   });
 });
 
+/*Listens to port 3000 to see if its available to run the NerdSwag API
+and prints out a statement stating it's running on that port if it runs on port 3000 */
 app.listen(3000, function(){
     console.log("NerdSwag API running on port 3000");
 });

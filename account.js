@@ -3,6 +3,9 @@ let schema = mongoose.Schema;
 
 let obj_id = mongoose.Schema.Types.ObjectId;
 
+/* An account schema that that makes each account have a username,
+ password, email, available account balance, the accoutn's associated wishlist,
+  and the account's associated cart*/
 let account = new schema({
     username: String,
     password: String,
