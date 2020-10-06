@@ -17,3 +17,6 @@ MongoDB,
 npm(node package manager),
 nodemon,
 and Postman(To add the products in the shop to the MongoDB database)
+
+# Demo Video
+This project was done and ran locally on my computer through my localhost ports, so I made a demo video quickly showing and explaining everything about this project. Please email me at sabdelghani777@gmail.com to request the demo video, since it's too big to upload on Github and Linkedin. I hope to see your email request for my NerdSwag E-commerce shop demo video.
